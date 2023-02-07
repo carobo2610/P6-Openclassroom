@@ -4,10 +4,12 @@ const express = require('express');
 const app = express();
 //pour avoir acces au corps de notre requete POST , utilisé car version 4.18 d'Express
 app.use(express.json()); 
+const path = require('path');
 
-//Importer les routes pour les users et pour les sauces 
+//Importer les routes  
 const userRoutes = require('./routes/users');
 const saucesRoutes = require('./routes/sauces');
+
 
 //connexion à la base de données MongoDB, Cluster1, base données: P6_API
 const mongoose = require('mongoose')
@@ -22,10 +24,12 @@ mongoose.connect('mongodb+srv://userP6:userp6@cluster1.osnmkkm.mongodb.net/?retr
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     next();
   });
 
+  //Indique à Express de gérer ressourece images de manière statique à chaque requette avec /images
+  app.use('/images', express.static(path.join(__dirname, 'images')));
   //Enregistrer la route de users depuis le dossier routes
   app.use('/api/auth', userRoutes);
   //Enrgeistrer la route des sauces depuis le dossier routes
