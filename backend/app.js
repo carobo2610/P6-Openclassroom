@@ -2,16 +2,20 @@
 const express = require('express');
 //Appel de la méthode express dans notre application 
 const app = express();
+
+const dotenv = require('dotenv');
+dotenv.config();
+
 //pour avoir acces au corps de notre requete POST , utilisé car version 4.18 d'Express
 app.use(express.json()); 
+
 const path = require('path');
 
 //Importer les routes  
 const userRoutes = require('./routes/users');
 const saucesRoutes = require('./routes/sauces');
 
-
-//connexion à la base de données MongoDB, Cluster1, base données: P6_API
+//Connexion à la base de données MongoDB
 const mongoose = require('mongoose')
 mongoose.set('strictQuery', false);
 mongoose.connect('mongodb+srv://userP6:userp6@cluster1.osnmkkm.mongodb.net/?retryWrites=true&w=majority',
@@ -28,7 +32,8 @@ app.use((req, res, next) => {
     next();
   });
 
-  //Indique à Express de gérer ressourece images de manière statique à chaque requette avec /images
+  //Routes
+  //Indique à Express de gérer ressource images de manière statique à chaque requette avec /images
   app.use('/images', express.static(path.join(__dirname, 'images')));
   //Enregistrer la route de users depuis le dossier routes
   app.use('/api/auth', userRoutes);

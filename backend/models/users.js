@@ -1,7 +1,7 @@
 //import de Mongoose qui fait le lien entre MongoDb et NodeJs
 const mongoose = require('mongoose');
 
-//ajout de mongoose-unique-validator comme pluggin à notre schema 
+//ajout de mongoose-unique-validator comme plugin à notre schema 
 const uniqueValidator = require('mongoose-unique-validator');
 
 //créer schéma pour le model des utilisateurs 

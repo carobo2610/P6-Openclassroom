@@ -14,7 +14,7 @@ router.post('/signup', usersControllers.signup);//si le chemin est API/signup, e
 //création de la route pour signup
 router.post('/login', usersControllers.login);
 
-router.get('/getUser', usersControllers.getUser);
+
 
 //exporter la route pour être importer depuis app.js
 module.exports = router;
