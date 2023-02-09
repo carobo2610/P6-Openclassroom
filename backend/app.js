@@ -18,7 +18,7 @@ const saucesRoutes = require('./routes/sauces');
 //Connexion à la base de données MongoDB
 const mongoose = require('mongoose')
 mongoose.set('strictQuery', false);
-mongoose.connect('mongodb+srv://userP6:userp6@cluster1.osnmkkm.mongodb.net/?retryWrites=true&w=majority',
+mongoose.connect(process.env.MONGO_URL,
 { 
  })
 .then(() => console.log('Connexion à MongoDB réussie !'))
