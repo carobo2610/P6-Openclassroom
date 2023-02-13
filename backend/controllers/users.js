@@ -27,7 +27,7 @@ exports.signup = async (req, res, next) => {
         }
     let checkUser = await User.findOne({
         email: req.body.email
-    }); //si l'email ets déja stocké dans la base de données
+    }); //si l'email est déja stocké dans la base de données
         if (checkUser){
             return res.status(409).json({ message: "Unauthorized" })
         }

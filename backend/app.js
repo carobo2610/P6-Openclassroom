@@ -1,6 +1,6 @@
 //Importer Express
 const express = require('express');
-//démarrage de Express 
+//Démarrage de Express 
 const app = express();
 //Importer module CORS de Node.js
 const cors = require('cors');
@@ -8,12 +8,12 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 dotenv.config();
 //Importer Helmet de Node.js
-//const helmet = require("helmet");
+const helmet = require("helmet");
 //Acceder au module "path" de Node.js pour travailler avec le dossier "images" 
 const path = require('path');
-// Importe Mongo sanitizer
+//Importer Mongo sanitizer
 const mongoSanitize = require('express-mongo-sanitize');
-//rate limiter
+//Express rate limiter
 const rateLimit = require('express-rate-limit');
 
 //Importer les routes  
@@ -29,6 +29,7 @@ mongoose.connect(process.env.MONGO_URL,
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
+app.use(helmet.xssFilter());
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
