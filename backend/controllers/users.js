@@ -1,13 +1,12 @@
-//fichier pour mettre la logique des fonctions relatives aux users
-
-//importer Bcrypt pour le cryptage des mots de passe
-const bcrypt = require('bcrypt');
-//importer jsonwebtoken
-const jwt = require('jsonwebtoken');
-//importer les users depuis le models des users
+//Fichier controllers pour gérer la logique de "user" avec les conditions
+//Importer le modèle "User"
 const User = require('../models/users');
+//Importer Bcrypt pour le cryptage des mots de passe
+const bcrypt = require('bcrypt');
+//Importer jsonwebtoken pour transférer des informations de manière sécurisée
+const jwt = require('jsonwebtoken');
 
-//Création des middleware d'authentification de nouveaux users
+//Middleware d'authentification de nouveaux users
 exports.signup = async (req, res, next) => {
     try {
         if (req.body.email) {
