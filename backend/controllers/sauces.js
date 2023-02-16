@@ -15,7 +15,7 @@ exports.getAllSauces = async (req, res, next) => {
   }
 };
 
-//Middlexare pour récupérer une seule sauce avec son id
+//Middleware pour récupérer une seule sauce avec son id
 exports.getOneSauce = async (req, res, next) => {
   try {
     let sauce = await Sauces.findOne({ _id: req.params.id });
@@ -29,7 +29,7 @@ exports.getOneSauce = async (req, res, next) => {
   }
 };
 
-//Middleware pour créer uen sauce
+//Middleware pour créer une sauce
 exports.createSauce = (req, res, next) => {
   const sauceObject = JSON.parse(req.body.sauce);
   delete req.body._userId;
@@ -81,14 +81,14 @@ exports.modifySauce = async (req, res, next) => {
 
 //Middleware pour supprimer une sauce
 exports.deleteSauce = async (req, res) => {
-  try {
+  try { //vérifier que la sauce existe
     let sauce = await Sauces.findOne({ _id: req.params.id });
     if(!sauce){
       return res.status(404).json({ message : 'Sauce non trouvée'});
-    }
+    } //Vérifier que c'est bien le créateur de la sauce qui veut supprimer
     if (sauce.userId != req.auth.userId) {
       return res.status(401).json({ message: "Unauthorized" });
-    }
+    } //supprimer l'image et supprimer l'id de la sauce
     const filename = sauce.imageUrl.split("/images/")[1];
       await fs.unlink(`images/${filename}`);
       await Sauces.deleteOne({ _id: req.params.id });
@@ -141,7 +141,6 @@ exports.likeDislikeSauce = async (req, res, next) => {
           return res.status(201).json({ message: "Dislike retiré" })
         }
         break;
-        // Retrait d'un like ou d'un dislike
       case -1:
         // Ajout d'un dislike
         if (!sauce.usersDisliked.includes(req.body.userId)) {

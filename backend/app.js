@@ -15,12 +15,11 @@ const path = require('path');
 const mongoSanitize = require('express-mongo-sanitize');
 //Express rate limiter
 const rateLimit = require('express-rate-limit');
-
 //Importer les routes  
 const userRoutes = require('./routes/users');
 const saucesRoutes = require('./routes/sauces');
 
-//Connexion à la base de données MongoDB
+//Connexion à la base de données Atlas MongoDB
 const mongoose = require('mongoose')
 mongoose.set('strictQuery', false);
 mongoose.connect(process.env.MONGO_URL,
@@ -29,7 +28,8 @@ mongoose.connect(process.env.MONGO_URL,
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
-app.use(helmet.xssFilter());
+app.use(helmet.xssFilter()); //	Protection basique contre le XSS, à la charge du navigateur
+app.use(helmet.noSniff()); //Empêche le navigateur de connaitre le type de fichier
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
@@ -37,16 +37,16 @@ app.use((req, res, next) => {
   next();
 });
 
-//Pour avoir acces au corps de notre requete POST , utilisé car version 4.18 d'Express
+//Pour avoir accès au corps de notre requete POST (version 4.18 d'Express)
 app.use(express.json());
 //Activation du module Cors
 app.use(cors());
 //Sanitizer les données contre attaques NoSQL
 app.use(mongoSanitize());
-//Rate limiter d'Express: limite le nombre de requètes retourne erreur 429
+//Rate limiter d'Express: limite le nombre de requètes 
 const limiter = rateLimit({
- windowMs: 60 * 60 * 1000, // 1 heure
- max: 100,   //100 requètes
+  windowMs: 60 * 60 * 1000, // 1 heure
+  max: 100,   //100 requètes
 });
 app.use(limiter);
 //Indique à Express de gérer la ressource images de manière statique à chaque requète avec /images
